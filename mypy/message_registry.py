@@ -141,6 +141,7 @@ TYPEDDICT_KEY_MUST_BE_STRING_LITERAL: Final = ErrorMessage(
 )
 TYPEDDICT_OVERRIDE_MERGE: Final = 'Overwriting TypedDict field "{}" while merging'
 MALFORMED_ASSERT: Final = ErrorMessage("Assertion is always true, perhaps remove parentheses?")
+NON_BOOLEAN_IN_CONDITIONAL: Final = ErrorMessage("Condition must be a boolean")
 DUPLICATE_TYPE_SIGNATURES: Final = ErrorMessage("Function has duplicate type signatures")
 DESCRIPTOR_SET_NOT_CALLABLE: Final = ErrorMessage("{}.__set__ is not callable")
 DESCRIPTOR_GET_NOT_CALLABLE: Final = "{}.__get__ is not callable"

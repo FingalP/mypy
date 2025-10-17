@@ -925,6 +925,14 @@ def define_options(
     )
 
     add_invertible_flag(
+        "--strict-boolean",
+        default=False,
+        strict_flag=True,
+        help="Only allow boolean expressions in conditions (if, while, ternary)",
+        group=strictness_group,
+    )
+
+    add_invertible_flag(
         "--extra-checks",
         default=False,
         strict_flag=True,
