@@ -5877,7 +5877,7 @@ class ExpressionChecker(ExpressionVisitor[Type], ExpressionCheckerSharedApi):
 
     def visit_conditional_expr(self, e: ConditionalExpr, allow_none_return: bool = False) -> Type:
         cond_type = self.accept(e.cond)
-        if self.chk.options.strict_boolean:
+        if self.chk.options.strict_boolean and not self.chk.is_building_mypy():
             is_bool = (isinstance(cond_type, Instance)
                 and cond_type.type.fullname() == 'builtins.bool')
             if not (is_bool or isinstance(cond_type, AnyType)):
