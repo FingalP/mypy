@@ -5879,7 +5879,7 @@ class ExpressionChecker(ExpressionVisitor[Type], ExpressionCheckerSharedApi):
         cond_type = self.accept(e.cond)
         if self.chk.options.strict_boolean and not self.chk.is_building_mypy():
             is_bool = (isinstance(cond_type, Instance)
-                and cond_type.type.fullname() == 'builtins.bool')
+                and cond_type.type.fullname == 'builtins.bool')
             if not (is_bool or isinstance(cond_type, AnyType)):
                 self.chk.fail(message_registry.NON_BOOLEAN_IN_CONDITIONAL, e)
         
