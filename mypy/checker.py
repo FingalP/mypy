@@ -5019,9 +5019,8 @@ class TypeChecker(NodeVisitor[None], TypeCheckerSharedApi):
                 if isinstance(t, DeletedType):
                     self.msg.deleted_as_rvalue(t, s)
 
-                # Check strict boolean if enabled (but not when building mypy itself)
-                if self.options.strict_boolean and not self.is_building_mypy():
-                    is_bool = isinstance(t, Instance) and t.type.fullname == 'builtins.bool'
+                if self.options.strict_boolean:
+                    is_bool = isinstance(t, Instance) and t.type.fullname() == 'builtins.bool'
                     if not (is_bool or isinstance(t, AnyType)):
                         self.fail(message_registry.NON_BOOLEAN_IN_CONDITIONAL, e)
 
