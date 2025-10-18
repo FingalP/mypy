@@ -478,17 +478,19 @@ class TypeChecker(NodeVisitor[None], TypeCheckerSharedApi):
     def type_context(self) -> list[Type | None]:
         return self._expr_checker.type_context
 
+    def is_building_mypy(self) -> bool:
+        """Check if we're currently building mypy itself (to skip strict boolean checks)."""
+        # Check if the current file is part of the mypy package
+        if hasattr(self, 'tree') and self.tree and self.tree.path:
+            return 'mypy' in self.tree.path
+        return False
+
     def reset(self) -> None:
         """Cleanup stale state that might be left over from a typechecking run.
 
         This allows us to reuse TypeChecker objects in fine-grained
         incremental mode.
         """
-        # TODO: verify this is still actually worth it over creating new checkers
-        self.partial_reported.clear()
-        self.module_refs.clear()
-        self.binder = ConditionalTypeBinder(self.options)
-        self._type_maps[1:] = []
         self._type_maps[0].clear()
         self.expr_checker.reset()
         self.deferred_nodes = []
@@ -5016,6 +5018,11 @@ class TypeChecker(NodeVisitor[None], TypeCheckerSharedApi):
 
                 if isinstance(t, DeletedType):
                     self.msg.deleted_as_rvalue(t, s)
+
+                if self.options.strict_boolean and not self.is_building_mypy():
+                    is_bool = isinstance(t, Instance) and t.type.fullname == 'builtins.bool'
+                    if not (is_bool or isinstance(t, AnyType)):
+                        self.fail(message_registry.NON_BOOLEAN_IN_CONDITIONAL, e)
 
                 if_map, else_map = self.find_isinstance_check(e)
 

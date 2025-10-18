@@ -53,6 +53,7 @@ PER_MODULE_OPTIONS: Final = {
     "implicit_reexport",
     "local_partial_types",
     "mypyc",
+    "strict_boolean",
     "strict_concatenate",
     "strict_equality",
     "strict_equality_for_none",
@@ -203,6 +204,9 @@ class Options:
 
         # Apply strict None checking
         self.strict_optional = True
+
+        # Only allow booleans in conditions
+        self.strict_boolean = False
 
         # Show "note: In function "foo":" messages.
         self.show_error_context = False

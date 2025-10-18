@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Callable, TypeVar, cast
+from typing import Any, Callable, TypeVar, cast
 
 from mypy import message_registry, state
 from mypy.checker_shared import TypeCheckerSharedApi
@@ -178,6 +178,7 @@ def analyze_member_access(
     is_self: bool = False,
     rvalue: Expression | None = None,
     suppress_errors: bool = False,
+    msg: Any = None,  # For Django plugin compatibility
 ) -> Type:
     """Return the type of attribute 'name' of 'typ'.
 
